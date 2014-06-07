@@ -1,1 +1,1 @@
-git push herkou master
+git push heroku master
