@@ -1,0 +1,10 @@
+{
+  "name": "collaborative-graph",
+  "description": "a collaborative graph",
+  "author": "someone",
+  "dependencies": {
+    "express": "~4.4.1",
+    "gulp": "~3.7.0"
+  },
+  "engine": "node 0.4.1"
+}

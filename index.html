@@ -1,0 +1,37 @@
+<html ng-app="myChatRoom">
+  <head>
+    <title>Estimation</title>
+    <link rel='stylesheet' href='style.css' type='text/css'>
+    <script src="https://cdn.firebase.com/js/client/1.0.15/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.min.js"></script>
+    <script src='app.js'></script>
+  </head>
+  <body>
+    <section ng-controller="InputController">
+      <form ng-submit="addEstimates();">
+        <fieldset>
+          <legend>
+            Let's say you have 100 5-man-day tasks to complete.
+            How many would actually be completed in:
+          </legend>
+          <label>1 day</label><input type="text" ng-model="userEstimates.1"/>
+          <label>3 days</label><input type="text" ng-model="userEstimates.3"/>
+          <label>5 days</label><input type="text" ng-model="userEstimates.5"/>
+          <label>7 days</label><input type="text" ng-model="userEstimates.7"/>
+          <label>9 days</label><input type="text" ng-model="userEstimates.9"/>
+          <label>11 days</label><input type="text" ng-model="userEstimates.11"/>
+          <label>13 days</label><input type="text" ng-model="userEstimates.13"/>
+          <input type="submit" value="Submit Estimates"/>
+        </fieldset>
+      </form>
+    </section>
+    <section ng-controller='GraphController'>
+      <ul ng-repeat="estimateSet in estimates">
+        <li>{{estimateSet.from}}: {{estimateSet.forDays}}</li>
+      </ul>
+    </section>
+  </body>
+</html>
+
+
