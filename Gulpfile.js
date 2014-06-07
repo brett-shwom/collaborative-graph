@@ -39,7 +39,7 @@ function buildStylus(event) {
   var fileNamePattern;
 
   if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
-    fileNamePattern = require('path').relative(EXPRESS_ROOT, event.path);
+    fileNamePattern = event.path;
   }
   else {
     fileNamePattern = 'src/*.styl'
@@ -56,7 +56,7 @@ function copyJS(event) {
   var fileNamePattern;
 
   if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
-    fileNamePattern = require('path').relative(EXPRESS_ROOT, event.path);
+    fileNamePattern = event.path;
   }
   else {
     fileNamePattern = 'src/*.js'
@@ -67,10 +67,12 @@ function copyJS(event) {
 }
 
 function copyHTML(event) {
+
+console.log('copyhtml')
   var fileNamePattern;
 
   if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
-    fileNamePattern = require('path').relative(EXPRESS_ROOT, event.path);
+    fileNamePattern =  event.path;
   }
   else {
     fileNamePattern = 'src/*.html'

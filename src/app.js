@@ -1,4 +1,4 @@
-angular.module("myChatRoom", ["firebase"])
+angular.module("CollaborativeGraph", ["firebase"])
   .factory("EstimateService", ["$firebase", function($firebase) {
     var ref = new Firebase("https://bruce-thing.firebaseio.com/estimates");
     return $firebase(ref);
