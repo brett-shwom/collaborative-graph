@@ -38,14 +38,14 @@ function buildStylus(event) {
 
   var fileName;
 
-  if (event) {
-    fileName = require('path').relative(EXPRESS_ROOT, event.path);
+  if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
+    fileNamePattern = require('path').relative(EXPRESS_ROOT, event.path);
   }
   else {
-    fileName = '*.styl'
+    fileNamePattern = '*.styl'
   }
 
-  gulp.src(fileName)
+  gulp.src(fileNamePattern)
     .pipe(stylus())
     .pipe(gulp.dest('./'));
 
@@ -58,11 +58,16 @@ gulp.task('build', function () {
 
 gulp.task('server', function () {
 
+  buildStylus();
   startExpress();
   startLivereload();
-  buildStylus();
+
+  /* watchers */
+
   gulp.watch('*.html', notifyLivereload);
   gulp.watch('*.css', notifyLivereload);
   gulp.watch('*.js', notifyLivereload);
+
+  /* rebuilders */
   gulp.watch('*.styl', buildStylus);
 });
