@@ -4,7 +4,13 @@
   "author": "someone",
   "dependencies": {
     "express": "~4.4.1",
-    "gulp": "~3.7.0"
+    "gulp": "~3.7.0",
+    "tiny-lr": "0.0.7",
+    "connect-livereload": "~0.4.0",
+    "gulp-stylus": "~1.0.2"
+  },
+  "scripts" : {
+    "postinstall" : "gulp build"
   },
   "engine": "node 0.4.1"
 }
