@@ -8,7 +8,6 @@ angular.module("myChatRoom", ["firebase"])
       $scope.user = "Guest " + Math.round(Math.random()*101);
       $scope.allEstimates = estimateService;
       $scope.addEstimates = function() {
-        debugger
         $scope.allEstimates.$add({
           from: $scope.user,
           forDays : $scope.userEstimates
