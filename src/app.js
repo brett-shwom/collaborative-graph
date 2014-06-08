@@ -15,6 +15,8 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
   })
   .factory('ComputeAverageEstimateForEachDay', ["AngularFirebasePropertyFilter", function (AngularFirebasePropertyFilter) {
 
+        //so ugly :( where's SQL when ya need it?
+
         return function (estimates) {
             var averages = {}
 
@@ -65,17 +67,27 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
   .controller("GraphController", ["$scope", "EstimateService","ComputeAverageEstimateForEachDay",
     function($scope, estimateService, computeAverageEstimateForEachDay) {
 
-        function recomputeAverages() {
+        function recomputeAveragesAndUpdateGraph() {
             $scope.averages = computeAverageEstimateForEachDay($scope.estimates)
-            console.log($scope.averages)
+            //$scope.graph.series.pop()
+            //setTimeout(function () {$scope.graph.series.push({data : [{x:2, y:100},{x:3, y:50}]}) })//need to call update or something here...
+            //$scope.$digest()
+            $scope.graph.series[0].data = [{x:1, y:100},{x:2, y:100}]
+
+            console.info('averages', $scope.averages)
         }
+
+
+        // $scope.$watchCollection('graph.series.0', function(newSeries, oldSeries) {
+        //     debugger
+        // });
 
         $scope.graph = {
             features : {},
             series : [{
                 name : 'series1',
                 color : 'steelblue',
-                data : [{x:1,y:1},{x:10,y:10}]
+                data : [{x:1, y:100}]
             }],
             options : {
                 renderer : 'bar',
@@ -85,9 +97,9 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
 
         $scope.estimates = estimateService;
         $scope.averages = {}
-        $scope.estimates.$on('value', recomputeAverages) //initial data load
-        $scope.estimates.$on('child_added', recomputeAverages)
-        $scope.estimates.$on('child_removed', recomputeAverages)
-        $scope.estimates.$on('child_changed', recomputeAverages)
+        $scope.estimates.$on('value', recomputeAveragesAndUpdateGraph) //initial data load
+        $scope.estimates.$on('child_added', recomputeAveragesAndUpdateGraph)
+        $scope.estimates.$on('child_removed', recomputeAveragesAndUpdateGraph)
+        $scope.estimates.$on('child_changed', recomputeAveragesAndUpdateGraph)
     }
   ]);
