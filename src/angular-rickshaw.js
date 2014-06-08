@@ -128,6 +128,12 @@ angular.module('angular-rickshaw', [])
                         }
                     });
 
+                    scope.$watch('series.0.data', function(newValue, oldValue) { //i added this in
+                        if (!angular.equals(newValue, oldValue)) {
+                            update();
+                        }
+                    });
+
                     scope.$watch('features', function(newValue, oldValue) {
                         if (!angular.equals(newValue, oldValue)) {
                             update();
