@@ -1,6 +1,47 @@
-angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
+angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw', 'ngRoute'])
+  .config(['$routeProvider', '$locationProvider',
+    function ($routeProvider, $locationProvider) {
+
+      $routeProvider
+        .when('/yourEstimates', {
+          template : ' ', //no need to load a new template
+          controller : 'PageManager',
+          resolve : {
+            load: function ($route) {
+              $route.current.params.pageName = 'yourEstimates' //inject the name of the page into $routeParams
+            }
+          }
+        })
+        .when('/individualEstimates', {
+          template : ' ', //no need to load a new template
+          controller : 'PageManager',
+          resolve : {
+            load: function ($route) {
+              $route.current.params.pageName = 'individualEstimates' //inject the name of the page into $routeParams
+            }
+          }
+        })
+        .when('/averageEstimates', {
+          template : ' ', //no need to load a new template
+          controller : 'PageManager',
+          resolve : {
+            load: function ($route) {
+              $route.current.params.pageName = 'averageEstimates' //inject the name of the page into $routeParams
+            }
+          }
+        })
+        .otherwise({
+          redirectTo : '/yourEstimates'
+        })
+
+
+      $locationProvider
+        .html5Mode(true)
+
+    }
+  ])
   .run(function() {
-    FastClick.attach(document.body);
+    FastClick.attach(document.body) //remove 250ms delay that occurs on click events on mobile
   })
   .factory("EstimateService", ["$firebase", function($firebase) {
     var ref = new Firebase("https://bruce-thing.firebaseio.com/estimates");
@@ -57,21 +98,24 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
             return averages
         }
   }])
-  .controller("Pager", ["$scope", function ($scope) {
+  .controller("PageManager", ['$scope', '$routeParams', function ($scope, $routeParams) {
 
-    var viewport = document.querySelector('.viewport')
+      var viewport = document.querySelector('.viewport')
+
+      viewport.className = 'viewport' //reset the viewport classList
+      viewport.classList.add($routeParams.pageName)
+
+  }])
+  .controller("Pager", ["$scope", "$location", function ($scope, $location) {
 
     $scope.yourEstimatesClicked = function () {
-      viewport.className = 'viewport'
-      viewport.classList.add('yourEstimates')
+       $location.path( '/yourEstimates' );
     }
     $scope.averageEstimatesClicked = function () {
-      viewport.className = 'viewport'
-      viewport.classList.add('averageEstimates')
+      $location.path( '/averageEstimates' );
     }
     $scope.individualEstimatesClicked = function () {
-      viewport.className = 'viewport'
-      viewport.classList.add('individualEstimates')
+      $location.path( '/individualEstimates' );
     }
 
   }])

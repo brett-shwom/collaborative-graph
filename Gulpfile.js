@@ -10,11 +10,14 @@ process.chdir(__dirname) //make paths relative to Gulpfile.js not the cwd
 
 function startExpress() {
 
-  var express = require('express');
-  var app = express();
-  app.use(require('connect-livereload')());
-  app.use(express.static(EXPRESS_ROOT));
-  app.listen(EXPRESS_PORT);
+  var express = require('express')
+  var app = express()
+  app.use(require('connect-livereload')())
+  app.use(express.static(EXPRESS_ROOT))
+  app.get('*', function(request, response) { //pushState support
+    response.sendfile(EXPRESS_ROOT + '/index.html')
+  })
+  app.listen(EXPRESS_PORT)
 }
 
 function startLivereload() {
@@ -137,15 +140,15 @@ gulp.task('watch', function () {
 
   /* watchers */
 
-  gulp.watch('./target/*.html', notifyLivereload);
-  gulp.watch('./target/*.css', notifyLivereload);
-  gulp.watch('./target/*.js', notifyLivereload);
+  gulp.watch('./target/**/*.html', notifyLivereload);
+  gulp.watch('./target/**/*.css', notifyLivereload);
+  gulp.watch('./target/**/*.js', notifyLivereload);
 
   /* rebuilders and copiers */
-  gulp.watch('./src/*.styl', buildStylus);
+  gulp.watch('./src/**/*.styl', buildStylus);
   gulp.watch('./src/**/*.js', copyJS);
-  gulp.watch('./src/*.html', copyHTML);
-  gulp.watch('./target/*.css', copyCSS);
+  gulp.watch('./src/**/*.html', copyHTML);
+  gulp.watch('./target/**/*.css', copyCSS);
 
   /* TODO: watch for changes in fonts */
 });
