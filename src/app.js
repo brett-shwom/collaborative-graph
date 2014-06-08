@@ -8,7 +8,7 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
   }])
   .factory('AngularFirebasePropertyFilter', function () {
 
-    var angularFirebaseProperties = ["$id", "$bind", "$add", "$save", "$set", "$update", "$transaction", "$remove", "$child", "$on", "$off", "$auth", "$getIndex", "$getRef"]
+    var angularFirebaseProperties = ["$id", "$bind", "$add", "$save", "$set", "$update", "$transaction", "$remove", "$child", "$on", "$off", "$auth", "$getIndex", "$getRef", "$value"]
 
     return {
         notAnAngularFirebaseProperty : function(property) {
@@ -34,6 +34,7 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
                         return estimates[estimateSetKey]
                     })
                     .forEach(function(estimateSet) {
+
 
                         Object.keys(estimateSet.forDays)
                             .forEach(function (daysEstimate) {
