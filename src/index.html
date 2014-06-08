@@ -5,6 +5,10 @@
     <script src="https://cdn.firebase.com/js/client/1.0.15/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.js"></script>
     <script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.min.js"></script>
+    <script src='https://rawgithub.com/mbostock/d3/master/d3.js'></script>
+    <script src='https://rawgithub.com/shutterstock/rickshaw/master/rickshaw.js'></script>
+    <script src='https://rawgithub.com/ngyewch/angular-rickshaw/master/rickshaw.js'></script>
+
     <script src='app.js'></script>
   </head>
   <body>
@@ -27,9 +31,34 @@
       </form>
     </section>
     <section ng-controller='GraphController'>
-      <ul ng-repeat="estimateSet in estimates">
-        <li>{{estimateSet.from}}: {{estimateSet.forDays}}</li>
-      </ul>
+        <rickshaw
+            rickshaw-options="graph.options"
+            rickshaw-features="graph.features"
+            rickshaw-series="graph.series">
+        </rickshaw>
+        Averages :
+        <ul>
+            <li>1 days - # of tasks :{{averages.1}}</li>
+            <li>3 days - # of tasks :{{averages.3}}</li>
+            <li>5 days - # of tasks :{{averages.5}}</li>
+            <li>7 days - # of tasks :{{averages.7}}</li>
+            <li>9 days - # of tasks :{{averages.9}}</li>
+            <li>11 days - # of tasks :{{averages.11}}</li>
+            <li>13 days - # of tasks :{{averages.13}}</li>
+        </ul>
+        <ul ng-repeat="estimateSet in estimates">
+            <li>{{estimateSet.from}}:
+                <ul >
+                    <li>1 days - # of tasks :{{estimateSet.forDays.1}}</li>
+                    <li>3 days - # of tasks :{{estimateSet.forDays.3}}</li>
+                    <li>5 days - # of tasks :{{estimateSet.forDays.5}}</li>
+                    <li>7 days - # of tasks :{{estimateSet.forDays.7}}</li>
+                    <li>9 days - # of tasks :{{estimateSet.forDays.9}}</li>
+                    <li>11 days - # of tasks :{{estimateSet.forDays.11}}</li>
+                    <li>13 days - # of tasks :{{estimateSet.forDays.13}}</li>
+                </ul>
+            </li>
+        </ul>
     </section>
   </body>
 </html>
