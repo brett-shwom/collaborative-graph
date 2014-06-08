@@ -1,9 +1,12 @@
 var gulp = require('gulp');
 var stylus = require('gulp-stylus');
+var gutil = require("gulp-util");
 
 var EXPRESS_PORT = 9000;
 var EXPRESS_ROOT = __dirname + '/target';
 var LIVERELOAD_PORT = 35729;
+
+process.chdir(__dirname) //make paths relative to Gulpfile.js not the cwd
 
 function startExpress() {
 
@@ -36,13 +39,15 @@ function notifyLivereload(event) {
 
 function buildStylus(event) {
 
+  gutil.log(gutil.colors.cyan('building stylus'));
+
   var fileNamePattern;
 
   if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
     fileNamePattern = event.path;
   }
   else {
-    fileNamePattern = 'src/*.styl'
+    fileNamePattern = './src/*.styl'
   }
 
   gulp.src(fileNamePattern)
@@ -53,13 +58,16 @@ function buildStylus(event) {
 }
 
 function copyJS(event) {
+
+  gutil.log(gutil.colors.cyan('copying js'));
+
   var fileNamePattern;
 
   if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
     fileNamePattern = event.path;
   }
   else {
-    fileNamePattern = 'src/*.js'
+    fileNamePattern = './src/*.js'
   }
 
   gulp.src(fileNamePattern)
@@ -68,14 +76,15 @@ function copyJS(event) {
 
 function copyHTML(event) {
 
-console.log('copyhtml')
+  gutil.log(gutil.colors.cyan('copying html'));
+
   var fileNamePattern;
 
   if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
     fileNamePattern =  event.path;
   }
   else {
-    fileNamePattern = 'src/*.html'
+    fileNamePattern = './src/*.html'
   }
 
   gulp.src(fileNamePattern)
@@ -92,14 +101,14 @@ gulp.task('watch', function () {
 
   /* watchers */
 
-  gulp.watch('target/*.html', notifyLivereload);
-  gulp.watch('target/*.css', notifyLivereload);
-  gulp.watch('target/*.js', notifyLivereload);
+  gulp.watch('./target/*.html', notifyLivereload);
+  gulp.watch('./target/*.css', notifyLivereload);
+  gulp.watch('./target/*.js', notifyLivereload);
 
   /* rebuilders */
-  gulp.watch('src/*.styl', buildStylus);
-  gulp.watch('src/*.js', copyJS);
-  gulp.watch('src/*.html', copyHTML);
+  gulp.watch('./src/*.styl', buildStylus);
+  gulp.watch('./src/*.js', copyJS);
+  gulp.watch('./src/*.html', copyHTML);
 });
 
 gulp.task('express', function () {
