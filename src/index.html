@@ -18,7 +18,7 @@
   </head>
   <body>
 
-    <div class='viewport'>
+    <div class='viewport yourEstimates'><!--yourEstimates is the default view - theres a better way to do this -->
         <section ng-controller="InputController" class='page yourEstimates'>
           <form ng-submit="addEstimates();">
             <fieldset>
@@ -26,41 +26,33 @@
                 <h2>Let's say you have 100 5-man-day tasks to complete.
                 How many would actually be completed in:</h2>
               </legend>
-              <label><span class='number'>1</span> <span class='unit'>day</span></label><input type="range" ng-model="userEstimates.1" min=1 max=100 /><span class='estimate'>{{userEstimates.1}}</span>
-              <label><span class='number'>3</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.3" min=1 max=100/><span class='estimate'>{{userEstimates.3}}</span>
-              <label><span class='number'>5</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.5" min=1 max=100/><span class='estimate'>{{userEstimates.5}}</span>
-              <label><span class='number'>7</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.7" min=1 max=100/><span class='estimate'>{{userEstimates.7}}</span>
-              <label><span class='number'>9</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.9" min=1 max=100/><span class='estimate'>{{userEstimates.9}}</span>
-              <label><span class='number'>11</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.11" min=1 max=100/><span class='estimate'>{{userEstimates.11}}</span>
-              <label><span class='number'>13</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.13" min=1 max=100/><span class='estimate'>{{userEstimates.13}}</span>
+              <div class='field'><label><span class='number'>1</span> <span class='unit'>day</span></label><input type="range" ng-model="userEstimates.1" min=0 max=100 /><span class='estimate'>{{userEstimates.1}}</span></div>
+              <div class='field'><label><span class='number'>3</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.3" min=0 max=100/><span class='estimate'>{{userEstimates.3}}</span></div>
+              <div class='field'><label><span class='number'>5</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.5" min=0 max=100/><span class='estimate'>{{userEstimates.5}}</span></div>
+              <div class='field'><label><span class='number'>7</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.7" min=0 max=100/><span class='estimate'>{{userEstimates.7}}</span></div>
+              <div class='field'><label><span class='number'>9</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.9" min=0 max=100/><span class='estimate'>{{userEstimates.9}}</span></div>
+              <div class='field'><label><span class='number'>11</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.11" min=0 max=100/><span class='estimate'>{{userEstimates.11}}</span></div>
+              <div class='field'><label><span class='number'>13</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.13" min=0 max=100/><span class='estimate'>{{userEstimates.13}}</span></div>
               <input type="submit" value="Submit Estimates"/>
             </fieldset>
           </form>
         </section>
-        <section ng-controller='GraphController' class='page individualEstimates'>
+        <section ng-controller='GraphController' class='page averageEstimates'>
             <header>
                 <h1>Averages</h1>
             </header>
-            <rickshaw
-                rickshaw-options="graph.options"
-                rickshaw-features="graph.features"
-                rickshaw-series="graph.series">
-            </rickshaw>
-            Averages :
-            <ul>
-                <li>1 days - # of tasks :{{averages.1}}</li>
-                <li>3 days - # of tasks :{{averages.3}}</li>
-                <li>5 days - # of tasks :{{averages.5}}</li>
-                <li>7 days - # of tasks :{{averages.7}}</li>
-                <li>9 days - # of tasks :{{averages.9}}</li>
-                <li>11 days - # of tasks :{{averages.11}}</li>
-                <li>13 days - # of tasks :{{averages.13}}</li>
-            </ul>
+            <section class='graph'>
+                <rickshaw
+                    rickshaw-options="graph.options"
+                    rickshaw-features="graph.features"
+                    rickshaw-series="graph.series">
+                </rickshaw>
+            </section>
         </section>
-        <section ng-controller="GraphController" class='page averageEstimates'>
-            <ul ng-repeat="estimateSet in estimates">
+        <section ng-controller="GraphController" class='page individualEstimates'>
+            <ul ng-repeat="estimateSet in estimates" class='estimate'>
                 <li>{{estimateSet.from}}:
-                    <ul >
+                    <ul>
                         <li>1 days - # of tasks :{{estimateSet.forDays.1}}</li>
                         <li>3 days - # of tasks :{{estimateSet.forDays.3}}</li>
                         <li>5 days - # of tasks :{{estimateSet.forDays.5}}</li>
@@ -76,9 +68,9 @@
 
     <section ng-controller="Pager" class='pager'>
         <nav>
-            <button ng-click='yourEstimatesClicked()'>You <i class="fa fa-user"></i></button>
-            <button ng-click='averageEstimatesClicked()'>Average <i class="fa fa-signal"></i></button>
-            <button ng-click='individualEstimatesClicked()'>Others <i class="fa fa-users"></i></button>
+            <button ng-click='yourEstimatesClicked()' class='yourEstimates'>You <i class="fa fa-user"></i></button>
+            <button ng-click='averageEstimatesClicked()' class='averageEstimates'>Average <i class="fa fa-signal"></i></button>
+            <button ng-click='individualEstimatesClicked()' class='individualEstimates'>Others <i class="fa fa-users"></i></button>
         </nav>
     </section>
   </body>

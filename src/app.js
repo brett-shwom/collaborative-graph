@@ -25,7 +25,7 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
             var averages = {}
 
             var totalEstimates =  Object.keys(estimates)
-                                    .filter(AngularFirebasePropertyFilter.notAnAngularFirebaseProperty)
+                                    .filter(AngularFirebasePropertyFilter.notAnAngularFirebaseProperty) //TODO: maybe i could just use $value instead?
                                     .length
 
             Object.keys(estimates)
