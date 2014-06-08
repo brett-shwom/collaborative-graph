@@ -44,10 +44,19 @@ function buildStylus(event) {
 
   gutil.log(gutil.colors.cyan('building stylus'));
 
-  var fileNamePattern;
+  var fileNamePattern
+    , relative;
 
   if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
     fileNamePattern = event.path;
+
+    //TODO: should we use the following for stylus build live reloading?
+
+    // fileNamePattern = event.path;
+    // relative = require('path').relative('./src', event.path)
+
+    // gulp.src("**/*" + relative, { cwd : './src' }) //https://github.com/gulpjs/gulp/issues/151 --> It seems that gulp only preserves the directory structure of globs.
+    //     .pipe(gulp.dest('./target'));
   }
   else {
     fileNamePattern = './src/*.styl'
@@ -64,10 +73,15 @@ function copyFontsAndImages(event) {
 
   gutil.log(gutil.colors.cyan('copying fonts and images'));
 
-  var fileNamePattern;
+  var fileNamePattern
+    , relative;
 
   if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
     fileNamePattern = event.path;
+    relative = require('path').relative('./src', event.path)
+
+    gulp.src("**/*" + relative, { cwd : './src' }) //https://github.com/gulpjs/gulp/issues/151 --> It seems that gulp only preserves the directory structure of globs.
+        .pipe(gulp.dest('./target'));
   }
   else {
     fileNamePattern = './src/**/*.{svg,otf,woff,ttf,eot}'
@@ -81,10 +95,15 @@ function copyCSS(event) {
 
   gutil.log(gutil.colors.cyan('copying css'));
 
-  var fileNamePattern;
+  var fileNamePattern
+    , relative;
 
   if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
     fileNamePattern = event.path;
+    relative = require('path').relative('./src', event.path)
+
+    gulp.src("**/*" + relative, { cwd : './src' }) //https://github.com/gulpjs/gulp/issues/151 --> It seems that gulp only preserves the directory structure of globs.
+        .pipe(gulp.dest('./target'));
   }
   else {
     fileNamePattern = './src/**/*.css'
@@ -98,17 +117,23 @@ function copyJS(event) {
 
   gutil.log(gutil.colors.cyan('copying js'));
 
-  var fileNamePattern;
+  var fileNamePattern
+    , relative
 
   if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
     fileNamePattern = event.path;
+    relative = require('path').relative('./src', event.path)
+
+    gulp.src("**/*" + relative, { cwd : './src' }) //https://github.com/gulpjs/gulp/issues/151 --> It seems that gulp only preserves the directory structure of globs.
+        .pipe(gulp.dest('./target'));
   }
   else {
     fileNamePattern = './src/**/*.js'
+    gulp.src(fileNamePattern)
+        .pipe(gulp.dest('./target'));
   }
 
-  gulp.src(fileNamePattern)
-    .pipe(gulp.dest('./target'));
+
 }
 
 function copyHTML(event) {
