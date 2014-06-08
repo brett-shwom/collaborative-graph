@@ -1,4 +1,7 @@
 angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
+  .run(function() {
+    FastClick.attach(document.body);
+  })
   .factory("EstimateService", ["$firebase", function($firebase) {
     var ref = new Firebase("https://bruce-thing.firebaseio.com/estimates");
     return $firebase(ref);
@@ -13,6 +16,7 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
         }
     }
   })
+
   .factory('ComputeAverageEstimateForEachDay', ["AngularFirebasePropertyFilter", function (AngularFirebasePropertyFilter) {
 
         //so ugly :( where's SQL when ya need it?
@@ -52,6 +56,24 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
             return averages
         }
   }])
+  .controller("Pager", ["$scope", function ($scope) {
+
+    var viewport = document.querySelector('.viewport')
+
+    $scope.yourEstimatesClicked = function () {
+      viewport.className = 'viewport'
+      viewport.classList.add('yourEstimates')
+    }
+    $scope.averageEstimatesClicked = function () {
+      viewport.className = 'viewport'
+      viewport.classList.add('averageEstimates')
+    }
+    $scope.individualEstimatesClicked = function () {
+      viewport.className = 'viewport'
+      viewport.classList.add('individualEstimates')
+    }
+
+  }])
   .controller("InputController", ["$scope", "EstimateService",
     function($scope, estimateService) {
       $scope.user = "Guest " + Math.round(Math.random()*101);
@@ -69,10 +91,15 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
 
         function recomputeAveragesAndUpdateGraph() {
             $scope.averages = computeAverageEstimateForEachDay($scope.estimates)
-            //$scope.graph.series.pop()
-            //setTimeout(function () {$scope.graph.series.push({data : [{x:2, y:100},{x:3, y:50}]}) })//need to call update or something here...
-            //$scope.$digest()
-            $scope.graph.series[0].data = [{x:1, y:100},{x:2, y:100}]
+
+            $scope.averagesMappedForBarGraph = Object.keys($scope.averages).map(function (days) {
+                return {
+                    x : +days,
+                    y: +$scope.averages[days]
+                }
+            })
+
+            $scope.graph.series[0].data = $scope.averagesMappedForBarGraph
 
             console.info('averages', $scope.averages)
         }
@@ -83,11 +110,13 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw'])
         // });
 
         $scope.graph = {
-            features : {},
+            features : {
+               // xAxis : true
+            },
             series : [{
                 name : 'series1',
                 color : 'steelblue',
-                data : [{x:1, y:100}]
+                data : []
             }],
             options : {
                 renderer : 'bar',

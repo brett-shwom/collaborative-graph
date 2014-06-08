@@ -1,20 +1,177 @@
+*
+    box-sizing border-box
+
+$pagePadding = 10px
+$numberOfPages = 3
+
+body
+  -webkit-perspective: 1000;
+
+
+/* mixins */
+
+transform()
+  transform arguments
+  -webkit-transform arguments
+
+animation()
+  animation arguments
+  -webkit-animation arguments
+
+display_flex()
+  display flex
+  display -webkit-flex
+
+flex()
+  flex arguments
+  -webkit-flex arguments
+
+justify_content()
+  justify-content arguments
+  -webkit-justify-content arguments
+
+flex_direction()
+  flex-direction arguments
+  -webkit-flex-direction arguments
+
+align_items()
+  align-items arguments
+  -webkit-align-items arguments
+
+/* end mixins */
+
 body, input
-   font-family "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-   font-weight 300;
+   font-family "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif
+   font-weight 300
+
+h1
+    font-size 1.67em
+
+h2
+    font-size 1.5em
+
+body
+
+    max-width 100%
+    overflow-x hidden
+
+html
+  overflow-y hidden
+
+
+
+.viewport
+  width $numberOfPages * 100%
+  display_flex()
+  overflow-y hidden
+
+  transition: all 0.25s linear
+
+  &.yourEstimates
+    transform translateX(0)
+
+  &.individualEstimates
+    transform translateX(-66.66%)
+
+  &.averageEstimates
+    transform translateX(-33.33%)
+
+
+
+.pager
+  position fixed
+  top 10px
+  left 0
+  width 100%
+  padding-left $pagePadding
+  padding-right $pagePadding
+
+  nav
+    display_flex()
+    justify_content center
+    flex_direction row
+    width 100%
+    margin-bottom 25px
+    background rgba(255,255,255,.5)
+
+    button
+      border 1px solid black
+      height 50px
+      font-size 1.3em
+      border-left none
+      &:nth-child(1)
+        border-left 1px solid black
+
+      background-color inherit
+      margin 0
+
+      &:hover
+        background-color lightblue
+
+      &:focus
+        outline none
+
+  @media screen and (max-width: 600px)
+    bottom 0
+    top initial
+    margin-bottom 0
+
 
 fieldset
-  border 0;
+  border 0
+
+  $unitWidth = 40px
+  $numberWidth = 23px
+
+  // input[type="range"]
+  //   transform scale(1.5)
+
+  input
+      display block
+      float left
+      display block
+  label
+      clear left
+      display block
+      float left
+      width $unitWidth + $numberWidth
+
+  legend
+    margin-bottom 10px
+
+  .unit
+    display block
+    float right
+    width $unitWidth
+
+  .number
+    display block
+    float left
+    width $numberWidth
+
+  .estimate
+    display block
+    float left
+
+  input[type='submit']
+    clear both
 
 
-fieldset input
-  display block
-  float left
-  display block
+.page
+  flex 1 1 0
+  height 100%
+  padding-top 80px
+  padding-left:$pagePadding
+  padding-right:$pagePadding
+  overflow-x hidden
+  overflow-y scroll
+  -webkit-overflow-scrolling touch
 
 
-fieldset label
-  clear left;
-  display block;
-  float left;
-  width 60px;
+  header
+    text-align center
+    width 100%
+
+
+
 

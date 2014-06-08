@@ -57,6 +57,40 @@ function buildStylus(event) {
 
 }
 
+function copyFontsAndImages(event) {
+
+  gutil.log(gutil.colors.cyan('copying fonts and images'));
+
+  var fileNamePattern;
+
+  if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
+    fileNamePattern = event.path;
+  }
+  else {
+    fileNamePattern = './src/**/*.{svg,otf,woff,ttf,eot}'
+  }
+
+  gulp.src(fileNamePattern)
+    .pipe(gulp.dest('./target'));
+}
+
+function copyCSS(event) {
+
+  gutil.log(gutil.colors.cyan('copying css'));
+
+  var fileNamePattern;
+
+  if (event) { //event is passed by gulp.watch. event.path will contain the path to the file that changed
+    fileNamePattern = event.path;
+  }
+  else {
+    fileNamePattern = './src/**/*.css'
+  }
+
+  gulp.src(fileNamePattern)
+    .pipe(gulp.dest('./target'));
+}
+
 function copyJS(event) {
 
   gutil.log(gutil.colors.cyan('copying js'));
@@ -67,7 +101,7 @@ function copyJS(event) {
     fileNamePattern = event.path;
   }
   else {
-    fileNamePattern = './src/*.js'
+    fileNamePattern = './src/**/*.js'
   }
 
   gulp.src(fileNamePattern)
@@ -84,7 +118,7 @@ function copyHTML(event) {
     fileNamePattern =  event.path;
   }
   else {
-    fileNamePattern = './src/*.html'
+    fileNamePattern = './src/**/*.html'
   }
 
   gulp.src(fileNamePattern)
@@ -95,6 +129,8 @@ gulp.task('build', function () {
   buildStylus()
   copyHTML();
   copyJS();
+  copyCSS();
+  copyFontsAndImages()
 });
 
 gulp.task('watch', function () {
@@ -105,10 +141,13 @@ gulp.task('watch', function () {
   gulp.watch('./target/*.css', notifyLivereload);
   gulp.watch('./target/*.js', notifyLivereload);
 
-  /* rebuilders */
+  /* rebuilders and copiers */
   gulp.watch('./src/*.styl', buildStylus);
-  gulp.watch('./src/*.js', copyJS);
+  gulp.watch('./src/**/*.js', copyJS);
   gulp.watch('./src/*.html', copyHTML);
+  gulp.watch('./target/*.css', copyCSS);
+
+  /* TODO: watch for changes in fonts */
 });
 
 gulp.task('express', function () {

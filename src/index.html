@@ -1,63 +1,85 @@
 <html ng-app="CollaborativeGraph">
   <head>
     <title>Estimation</title>
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0, height=device-height,  minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel='stylesheet' href='css-reset.css' type='text/css'>
     <link rel='stylesheet' href='style.css' type='text/css'>
-    <script src="https://cdn.firebase.com/js/client/1.0.15/firebase.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.js"></script>
-    <script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.min.js"></script>
-    <script src='https://rawgithub.com/mbostock/d3/master/d3.js'></script>
-    <script src='https://rawgithub.com/shutterstock/rickshaw/master/rickshaw.js'></script>
-    <script src='angular-rickshaw.js'></script><!--modified version of angular-rickshaw-->
+    <link rel='stylesheet' href='vendor/font-awesome.min.css' type='text/css'>
+    <script src="vendor/fastclick.js"></script>
+    <script src="vendor/firebase.js"></script>
+    <script src="vendor/angular.js"></script>
+    <script src="vendor/angularfire.min.js"></script>
+    <script src='vendor/d3.js'></script>
+    <script src='vendor/rickshaw.js'></script>
+    <script src='vendor/angular-rickshaw.js'></script><!--modified version of angular-rickshaw-->
     <script src='app.js'></script>
   </head>
   <body>
-    <section ng-controller="InputController">
-      <form ng-submit="addEstimates();">
-        <fieldset>
-          <legend>
-            Let's say you have 100 5-man-day tasks to complete.
-            How many would actually be completed in:
-          </legend>
-          <label>1 day</label><input type="text" ng-model="userEstimates.1"/>
-          <label>3 days</label><input type="text" ng-model="userEstimates.3"/>
-          <label>5 days</label><input type="text" ng-model="userEstimates.5"/>
-          <label>7 days</label><input type="text" ng-model="userEstimates.7"/>
-          <label>9 days</label><input type="text" ng-model="userEstimates.9"/>
-          <label>11 days</label><input type="text" ng-model="userEstimates.11"/>
-          <label>13 days</label><input type="text" ng-model="userEstimates.13"/>
-          <input type="submit" value="Submit Estimates"/>
-        </fieldset>
-      </form>
-    </section>
-    <section ng-controller='GraphController'>
-        <rickshaw
-            rickshaw-options="graph.options"
-            rickshaw-features="graph.features"
-            rickshaw-series="graph.series">
-        </rickshaw>
-        Averages :
-        <ul>
-            <li>1 days - # of tasks :{{averages.1}}</li>
-            <li>3 days - # of tasks :{{averages.3}}</li>
-            <li>5 days - # of tasks :{{averages.5}}</li>
-            <li>7 days - # of tasks :{{averages.7}}</li>
-            <li>9 days - # of tasks :{{averages.9}}</li>
-            <li>11 days - # of tasks :{{averages.11}}</li>
-            <li>13 days - # of tasks :{{averages.13}}</li>
-        </ul>
-        <ul ng-repeat="estimateSet in estimates">
-            <li>{{estimateSet.from}}:
-                <ul >
-                    <li>1 days - # of tasks :{{estimateSet.forDays.1}}</li>
-                    <li>3 days - # of tasks :{{estimateSet.forDays.3}}</li>
-                    <li>5 days - # of tasks :{{estimateSet.forDays.5}}</li>
-                    <li>7 days - # of tasks :{{estimateSet.forDays.7}}</li>
-                    <li>9 days - # of tasks :{{estimateSet.forDays.9}}</li>
-                    <li>11 days - # of tasks :{{estimateSet.forDays.11}}</li>
-                    <li>13 days - # of tasks :{{estimateSet.forDays.13}}</li>
-                </ul>
-            </li>
-        </ul>
+
+    <div class='viewport'>
+        <section ng-controller="InputController" class='page yourEstimates'>
+          <form ng-submit="addEstimates();">
+            <fieldset>
+              <legend>
+                <h2>Let's say you have 100 5-man-day tasks to complete.
+                How many would actually be completed in:</h2>
+              </legend>
+              <label><span class='number'>1</span> <span class='unit'>day</span></label><input type="range" ng-model="userEstimates.1" min=1 max=100 /><span class='estimate'>{{userEstimates.1}}</span>
+              <label><span class='number'>3</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.3" min=1 max=100/><span class='estimate'>{{userEstimates.3}}</span>
+              <label><span class='number'>5</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.5" min=1 max=100/><span class='estimate'>{{userEstimates.5}}</span>
+              <label><span class='number'>7</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.7" min=1 max=100/><span class='estimate'>{{userEstimates.7}}</span>
+              <label><span class='number'>9</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.9" min=1 max=100/><span class='estimate'>{{userEstimates.9}}</span>
+              <label><span class='number'>11</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.11" min=1 max=100/><span class='estimate'>{{userEstimates.11}}</span>
+              <label><span class='number'>13</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.13" min=1 max=100/><span class='estimate'>{{userEstimates.13}}</span>
+              <input type="submit" value="Submit Estimates"/>
+            </fieldset>
+          </form>
+        </section>
+        <section ng-controller='GraphController' class='page individualEstimates'>
+            <header>
+                <h1>Averages</h1>
+            </header>
+            <rickshaw
+                rickshaw-options="graph.options"
+                rickshaw-features="graph.features"
+                rickshaw-series="graph.series">
+            </rickshaw>
+            Averages :
+            <ul>
+                <li>1 days - # of tasks :{{averages.1}}</li>
+                <li>3 days - # of tasks :{{averages.3}}</li>
+                <li>5 days - # of tasks :{{averages.5}}</li>
+                <li>7 days - # of tasks :{{averages.7}}</li>
+                <li>9 days - # of tasks :{{averages.9}}</li>
+                <li>11 days - # of tasks :{{averages.11}}</li>
+                <li>13 days - # of tasks :{{averages.13}}</li>
+            </ul>
+        </section>
+        <section ng-controller="GraphController" class='page averageEstimates'>
+            <ul ng-repeat="estimateSet in estimates">
+                <li>{{estimateSet.from}}:
+                    <ul >
+                        <li>1 days - # of tasks :{{estimateSet.forDays.1}}</li>
+                        <li>3 days - # of tasks :{{estimateSet.forDays.3}}</li>
+                        <li>5 days - # of tasks :{{estimateSet.forDays.5}}</li>
+                        <li>7 days - # of tasks :{{estimateSet.forDays.7}}</li>
+                        <li>9 days - # of tasks :{{estimateSet.forDays.9}}</li>
+                        <li>11 days - # of tasks :{{estimateSet.forDays.11}}</li>
+                        <li>13 days - # of tasks :{{estimateSet.forDays.13}}</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </div>
+
+    <section ng-controller="Pager" class='pager'>
+        <nav>
+            <button ng-click='yourEstimatesClicked()'>You <i class="fa fa-user"></i></button>
+            <button ng-click='averageEstimatesClicked()'>Average <i class="fa fa-signal"></i></button>
+            <button ng-click='individualEstimatesClicked()'>Others <i class="fa fa-users"></i></button>
+        </nav>
     </section>
   </body>
 </html>
