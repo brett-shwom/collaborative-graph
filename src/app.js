@@ -109,13 +109,13 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw', 'ngRoute'])
   .controller("Pager", ["$scope", "$location", function ($scope, $location) {
 
     $scope.yourEstimatesClicked = function () {
-       $location.path( '/yourEstimates' );
+       $location.path('/yourEstimates')
     }
     $scope.averageEstimatesClicked = function () {
-      $location.path( '/averageEstimates' );
+      $location.path('/averageEstimates')
     }
     $scope.individualEstimatesClicked = function () {
-      $location.path( '/individualEstimates' );
+      $location.path('/individualEstimates')
     }
 
   }])
@@ -155,9 +155,9 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw', 'ngRoute'])
         // });
 
         $scope.graph = {
-            features : {
-               // xAxis : true
-            },
+            // features : {
+            //     xAxis : true
+            // },
             series : [{
                 name : 'series1',
                 color : 'steelblue',
@@ -165,7 +165,7 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw', 'ngRoute'])
             }],
             options : {
                 renderer : 'bar',
-                width : 100
+                width : 200
             }
         }
 

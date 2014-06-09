@@ -27,21 +27,49 @@
                 <h2>Let's say you have 100 5-man-day tasks to complete.
                 How many would actually be completed in:</h2>
               </legend>
-              <div class='field'><label><span class='number'>1</span> <span class='unit'>day</span></label><input type="range" ng-model="userEstimates.1" min=0 max=100 /><span class='estimate'>{{userEstimates.1}}</span></div>
-              <div class='field'><label><span class='number'>3</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.3" min=0 max=100/><span class='estimate'>{{userEstimates.3}}</span></div>
-              <div class='field'><label><span class='number'>5</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.5" min=0 max=100/><span class='estimate'>{{userEstimates.5}}</span></div>
-              <div class='field'><label><span class='number'>7</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.7" min=0 max=100/><span class='estimate'>{{userEstimates.7}}</span></div>
-              <div class='field'><label><span class='number'>9</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.9" min=0 max=100/><span class='estimate'>{{userEstimates.9}}</span></div>
-              <div class='field'><label><span class='number'>11</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.11" min=0 max=100/><span class='estimate'>{{userEstimates.11}}</span></div>
-              <div class='field'><label><span class='number'>13</span> <span class='unit'>days</span></label><input type="range" ng-model="userEstimates.13" min=0 max=100/><span class='estimate'>{{userEstimates.13}}</span></div>
+              <div class='field'>
+                  <label><span class='number'>1</span>  <span class='unit'>day</span>
+                  </label>
+                  <input type="range" ng-model="userEstimates.1" min=0 max=100 /><span class='estimate'>{{userEstimates.1}}</span>
+              </div>
+              <div class='field'>
+                  <label><span class='number'>3</span>  <span class='unit'>days</span>
+                  </label>
+                  <input type="range" ng-model="userEstimates.3" min=0 max=100/><span class='estimate'>{{userEstimates.3}}</span>
+              </div>
+              <div class='field'>
+                  <label><span class='number'>5</span>  <span class='unit'>days</span>
+                  </label>
+                  <input type="range" ng-model="userEstimates.5" min=0 max=100/><span class='estimate'>{{userEstimates.5}}</span>
+              </div>
+              <div class='field'>
+                  <label><span class='number'>7</span>  <span class='unit'>days</span>
+                  </label>
+                  <input type="range" ng-model="userEstimates.7" min=0 max=100/><span class='estimate'>{{userEstimates.7}}</span>
+              </div>
+              <div class='field'>
+                  <label><span class='number'>9</span>  <span class='unit'>days</span>
+                  </label>
+                  <input type="range" ng-model="userEstimates.9" min=0 max=100/><span class='estimate'>{{userEstimates.9}}</span>
+              </div>
+              <div class='field'>
+                  <label><span class='number'>11</span>  <span class='unit'>days</span>
+                  </label>
+                  <input type="range" ng-model="userEstimates.11" min=0 max=100/><span class='estimate'>{{userEstimates.11}}</span>
+              </div>
+              <div class='field'>
+                  <label><span class='number'>13</span>  <span class='unit'>days</span>
+                  </label>
+                  <input type="range" ng-model="userEstimates.13" min=0 max=100/><span class='estimate'>{{userEstimates.13}}</span>
+              </div>
               <input type="submit" value="Submit Estimates"/>
             </fieldset>
           </form>
         </section>
         <section ng-controller='GraphController' class='page averageEstimates'>
-            <header>
+<!--             <header>
                 <h1>Averages</h1>
-            </header>
+            </header> -->
             <section class='graph'>
                 <rickshaw
                     rickshaw-options="graph.options"
@@ -52,8 +80,16 @@
         </section>
         <section ng-controller="GraphController" class='page individualEstimates'>
             <ul ng-repeat="estimateSet in estimates" class='estimate'>
-                <li>{{estimateSet.from}}:
-                    <ul>
+                <li>
+                  <figure>
+                    <figcaption>{{estimateSet.from}}</figcaption>
+                  <rickshaw
+                      rickshaw-options="graph.options"
+                      rickshaw-features="graph.features"
+                      rickshaw-series="graph.series">
+                  </rickshaw>
+                </figure>
+<!--                     <ul>
                         <li>1 days - # of tasks :{{estimateSet.forDays.1}}</li>
                         <li>3 days - # of tasks :{{estimateSet.forDays.3}}</li>
                         <li>5 days - # of tasks :{{estimateSet.forDays.5}}</li>
@@ -61,7 +97,7 @@
                         <li>9 days - # of tasks :{{estimateSet.forDays.9}}</li>
                         <li>11 days - # of tasks :{{estimateSet.forDays.11}}</li>
                         <li>13 days - # of tasks :{{estimateSet.forDays.13}}</li>
-                    </ul>
+                    </ul> -->
                 </li>
             </ul>
         </section>
