@@ -150,6 +150,9 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw', 'ngRoute'])
         $scope.allEstimates.$add({
           from: $scope.user,
           forDays : $scope.userEstimates
+        }).then( function (ref) {
+          //$scope.allEstimates[ref.name()]
+          //ref.name() //name of key added to firebase -- this is the unique userId for our intents and purposes
         });
       };
     }
