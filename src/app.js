@@ -57,7 +57,30 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw', 'ngRoute'])
         }
     }
   })
+  .factory('MapIndividualEstimatesToRickshawSeries', ['AngularFirebasePropertyFilter', function (AngularFirebasePropertyFilter) {
 
+      return function (estimates, seriesToCopy) {
+
+        Object.keys(estimates)
+            .filter(AngularFirebasePropertyFilter.notAnAngularFirebaseProperty) //there's gotta be some other way to do this
+            .map(function (estimateSetKey) {
+                return estimates[estimateSetKey]
+            })
+            .forEach(function(estimateSet) {
+              var series = angular.copy(seriesToCopy) //deep copy
+
+
+              series[0].data = estimateSet.forDays ? Object.keys(estimateSet.forDays).map(function (key) {
+                return {
+                  x: +key,
+                  y : +estimateSet.forDays[key]
+                }
+              }) : []
+
+              estimateSet.rickshawSeries = series
+            })
+      }
+  }])
   .factory('ComputeAverageEstimateForEachDay', ["AngularFirebasePropertyFilter", function (AngularFirebasePropertyFilter) {
 
         //so ugly :( where's SQL when ya need it?
@@ -131,10 +154,22 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw', 'ngRoute'])
       };
     }
   ])
-  .controller("GraphController", ["$scope", "EstimateService","ComputeAverageEstimateForEachDay",
-    function($scope, estimateService, computeAverageEstimateForEachDay) {
+  .controller("GraphController", ["$scope", "EstimateService","ComputeAverageEstimateForEachDay","MapIndividualEstimatesToRickshawSeries",
+    function($scope, estimateService, computeAverageEstimateForEachDay,mapIndividualEstimatesToRickshawSeries) {
 
-        function recomputeAveragesAndUpdateGraph() {
+        function recomputeRemapAndUpdateGraph() {
+
+
+            /* remap */
+
+            mapIndividualEstimatesToRickshawSeries($scope.estimates, [{
+                name : 'series1',
+                color : 'steelblue',
+                data : []
+            }])
+
+            /* recompute averages */
+
             $scope.averages = computeAverageEstimateForEachDay($scope.estimates)
 
             $scope.averagesMappedForBarGraph = Object.keys($scope.averages).map(function (days) {
@@ -146,13 +181,7 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw', 'ngRoute'])
 
             $scope.graph.series[0].data = $scope.averagesMappedForBarGraph
 
-            console.info('averages', $scope.averages)
         }
-
-
-        // $scope.$watchCollection('graph.series.0', function(newSeries, oldSeries) {
-        //     debugger
-        // });
 
         $scope.graph = {
             // features : {
@@ -171,9 +200,9 @@ angular.module("CollaborativeGraph", ["firebase",'angular-rickshaw', 'ngRoute'])
 
         $scope.estimates = estimateService;
         $scope.averages = {}
-        $scope.estimates.$on('value', recomputeAveragesAndUpdateGraph) //initial data load
-        $scope.estimates.$on('child_added', recomputeAveragesAndUpdateGraph)
-        $scope.estimates.$on('child_removed', recomputeAveragesAndUpdateGraph)
-        $scope.estimates.$on('child_changed', recomputeAveragesAndUpdateGraph)
+        $scope.estimates.$on('value', recomputeRemapAndUpdateGraph) //initial data load
+        $scope.estimates.$on('child_added', recomputeRemapAndUpdateGraph)
+        $scope.estimates.$on('child_removed', recomputeRemapAndUpdateGraph)
+        $scope.estimates.$on('child_changed', recomputeRemapAndUpdateGraph)
     }
   ]);
